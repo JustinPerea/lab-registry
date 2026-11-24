@@ -98,6 +98,22 @@ engine. Other comments survive. So:
 - `registry:test`: all 268 dry-run installs pass (every base and style, each icon library and each
   `components.json` option, including prefix, `cssVariables: false`, `tsx: false` and custom aliases).
 
+## Deploying
+
+- Vercel project `lab-registry` on the "Justin's projects" team, made with the CLI, not linked to GitHub, so
+  a push deploys nothing. Root directory `apps/web`, Node 24, pnpm 12 through
+  `ENABLE_EXPERIMENTAL_COREPACK=1`. Deployment Protection is Standard (`all_except_custom_domains`).
+- Deploy only with `scripts/deploy-preview.sh`. It deploys to the preview environment, fails if Vercel made
+  anything else, and fails if any of the deployment's addresses answers without Vercel sign-in.
+- Why: the first plain `vercel deploy` on this new project became a production deployment. Vercel gave it
+  `lab-registry-psi.vercel.app`, which Standard Protection leaves public. It answered 200 from about
+  16:40 to 16:42 UTC on 2026-11-24, until the alias was removed. That deployment is deleted, and so are two
+  previews made while fixing the script. The current preview is behind sign-in.
+- The `.env.local` that `vercel link` writes is ignored by the kit's own `.env*.local` rule. Link also adds
+  `.env*` to `.gitignore`; that edit was reverted, since it would ignore `apps/web/.env.schema`.
+- A protected preview can be looked at by a signed-in team member. It can't serve `shadcn add` to anyone
+  else, so the installs above ran against the local server.
+
 ## Not verified
 
 - No real phone.
