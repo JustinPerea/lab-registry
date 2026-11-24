@@ -1,2 +1,9 @@
 .style-lyra {
+  .cn-melt-switch {
+    @apply focus-visible:ring-1 focus-visible:ring-ring/50;
+  }
+
+  .cn-melt-switch-aria {
+    @apply data-focus-visible:ring-1 data-focus-visible:ring-ring/50;
+  }
 }

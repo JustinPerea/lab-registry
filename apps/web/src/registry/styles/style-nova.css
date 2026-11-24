@@ -3,4 +3,11 @@
  * other styles fall back to it for any marker they don't define.
  */
 .style-nova {
+  .cn-melt-switch {
+    @apply focus-visible:ring-3 focus-visible:ring-ring/50;
+  }
+
+  .cn-melt-switch-aria {
+    @apply data-focus-visible:ring-3 data-focus-visible:ring-ring/50;
+  }
 }

@@ -34,6 +34,7 @@
     "apps/web/src/registry/styles/**/*.css",
     "apps/web/src/env.ts",
     "pnpm-lock.yaml",
+    "apps/web/src/registry/bases/*/lib/liquid-glass-engine.ts",
     "**/*.md",
     "**/*.mdx"
   ]

@@ -2,5 +2,31 @@
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "justinperea",
   "homepage": "https://registry.justinperea.com",
-  "items": []
+  "items": [
+    {
+      "name": "melt-switch",
+      "type": "registry:ui",
+      "title": "Melt Switch",
+      "description": "A switch whose knob is a drop of glass. It crosses the track by pouring, stretching or dripping, on tuned springs, in your theme's colors. The glass is drawn by Bilal Gürşen's Liquid Glass kit (MIT).",
+      "dependencies": ["cn", "radix-ui"],
+      "files": [
+        {
+          "path": "ui/melt-switch.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/melt-surface.tsx",
+          "type": "registry:lib"
+        },
+        {
+          "path": "lib/melt.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "lib/liquid-glass-engine.ts",
+          "type": "registry:lib"
+        }
+      ]
+    }
+  ]
 }

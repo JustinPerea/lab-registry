@@ -1,2 +1,9 @@
 .style-sera {
+  .cn-melt-switch {
+    @apply focus-visible:ring-2 focus-visible:ring-ring/30;
+  }
+
+  .cn-melt-switch-aria {
+    @apply data-focus-visible:ring-2 data-focus-visible:ring-ring/30;
+  }
 }
