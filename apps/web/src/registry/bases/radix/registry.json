@@ -8,6 +8,7 @@
       "type": "registry:ui",
       "title": "Melt Switch",
       "description": "A switch whose knob is a drop of glass. It crosses the track by pouring, stretching or dripping, on tuned springs, in your theme's colors. The glass is drawn by Bilal Gürşen's Liquid Glass kit (MIT).",
+      "registryDependencies": ["@justinperea/melt-glass"],
       "dependencies": ["cn", "radix-ui"],
       "files": [
         {
@@ -20,6 +21,36 @@
         },
         {
           "path": "lib/melt.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "melt-segmented-control",
+      "type": "registry:ui",
+      "title": "Melt Segmented Control",
+      "description": "A segmented control whose selection is a pill of glass. It stretches from segment to segment on tuned springs, and bends and magnifies the label under it, in your theme's colors. The glass is drawn by Bilal Gürşen's Liquid Glass kit (MIT).",
+      "registryDependencies": ["@justinperea/melt-glass"],
+      "dependencies": ["cn", "radix-ui"],
+      "files": [
+        {
+          "path": "ui/melt-segmented-control.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/melt-segments.tsx",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "melt-glass",
+      "type": "registry:lib",
+      "title": "Melt Glass",
+      "description": "What the melt components share: Bilal Gürşen's Liquid Glass engine (MIT), copied unedited, with its license, and the code that reads theme colors and registers a surface with the engine.",
+      "files": [
+        {
+          "path": "lib/melt-glass.tsx",
           "type": "registry:lib"
         },
         {

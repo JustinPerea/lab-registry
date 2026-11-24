@@ -7,6 +7,8 @@ A [shadcn registry](https://ui.shadcn.com/docs/registry) of components from [jus
 | Item          | What it is |
 | ------------- | ---------- |
 | `melt-switch` | A switch whose knob is a drop of glass. `preset` picks how it crosses the track: `pour`, `stretch` or `drip`. It wraps each base's own Switch and takes the project's theme colors. [Lab page](https://justinperea.com/lab/melt-switch) |
+| `melt-segmented-control` | A segmented control whose selection is a pill of glass. It stretches from segment to segment and magnifies the label under it. It wraps each base's own radio group, so arrow keys and forms work, and takes the project's theme colors. |
+| `melt-glass` | What the two above share: the Liquid Glass engine with its license, and the code that reads theme colors. It installs with either of them. |
 
 ## Installing
 
@@ -23,6 +25,16 @@ pnpm dlx shadcn@latest add @justinperea/melt-switch
 import { MeltSwitch } from "@/components/ui/melt-switch";
 
 <MeltSwitch preset="drip" defaultChecked />;
+```
+
+```tsx
+import { MeltSegment, MeltSegmentedControl } from "@/components/ui/melt-segmented-control";
+
+<MeltSegmentedControl defaultValue="week" aria-label="Range">
+  <MeltSegment value="day">Day</MeltSegment>
+  <MeltSegment value="week">Week</MeltSegment>
+  <MeltSegment value="month">Month</MeltSegment>
+</MeltSegmentedControl>;
 ```
 
 ## Developing
@@ -43,4 +55,4 @@ pnpm check             # lint, format and types
 ## Credits
 
 - Built on [registry-kit](https://github.com/sadmann7/registry-kit) by Sadman Sakib (MIT, see [LICENSE](./LICENSE)), from commit `aae92e0`.
-- The melt switch's glass is drawn by `liquid-glass-engine.ts`, copied unedited from [Liquid Glass](https://github.com/bilalgursen/liquid-glass) by Bilal Gürşen (MIT, commit `d4ef632`). Its license is in each base's `lib/melt-surface.tsx`.
+- The melt switch's glass is drawn by `liquid-glass-engine.ts`, copied unedited from [Liquid Glass](https://github.com/bilalgursen/liquid-glass) by Bilal Gürşen (MIT, commit `d4ef632`). Its license is in each base's `lib/melt-glass.tsx` and `lib/melt-surface.tsx`.

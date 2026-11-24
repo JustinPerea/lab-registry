@@ -25,7 +25,8 @@ any base and style with RTL, first item the melt switch with all three presets.
 ## The melt switch item
 
 - Files per base: `ui/melt-switch.tsx` (the base's own Switch), `lib/melt-surface.tsx` (canvas, theme,
-  engine registration, fallback), `lib/melt.ts` (the three motion models), `lib/liquid-glass-engine.ts`.
+  engine registration, fallback) and `lib/melt.ts` (the three motion models). The engine comes from the
+  `melt-glass` item, which the switch depends on (see the segmented control below).
 - `melt.ts` is personal-profile's `melt.ts` cut to pour, stretch and drip. Hold and the code readout's
   `probe()` stay in the lab. The spring constants are the same.
 - Each base wraps its own Switch, so focus, keyboard, labels, form value and controlled state come from the
@@ -62,6 +63,45 @@ any base and style with RTL, first item the melt switch with all three presets.
   wins whatever order Tailwind emits the variants in). Before that, and without JS, the root shows the
   plain on/off colors.
 
+## The melt segmented control item
+
+Justin picked it as the second item on 2026-11-24. It is the lab's glass segment selector made into a
+component.
+
+- **Shared files.** The kit's build gives every file one owner item, and other items list that owner in
+  `registryDependencies`. So the engine moved into a new `melt-glass` item (`lib/melt-glass.tsx` and the
+  engine), and both the switch and the segmented control depend on it. The switch's own files are unchanged,
+  so projects that installed it before keep working. Adding the segmented control to such a project skips
+  the engine as identical (checked on a real install).
+- `lib/melt-glass.tsx` starts with `"use client"` and carries the kit's license below it, as
+  `melt-surface.tsx` does. The switch's file keeps its own copy of the plumbing rather than importing the new
+  one, so its published files didn't change.
+- **Base.** Each base wraps its own radio group: Radix `RadioGroup`, Base UI `RadioGroup` and `Radio`,
+  React Aria `RadioGroup` with `RadioField` and `RadioButton` (`Radio` is deprecated in 1.22).
+  Value props follow the base: `value`, `defaultValue`, `onValueChange` (Radix, Base UI) or `onChange`
+  (React Aria).
+- **Layout comes from the DOM.** The glass reads each segment's `offsetLeft` and width and its text's box, so
+  segments can be any width, RTL needs no mirroring, and it lays out again on resize, text change and font
+  load.
+- **Text.** The segments keep their own text in the DOM, between the track canvas and the lens canvas.
+  Outside the pill you see the page's text; inside it the lens shows the same text painted on canvas,
+  bent and magnified. Only text is painted, so an icon in a segment is hidden while the pill is over it.
+- **The lens magnifies around `cx`.** With `cx` at the control's centre and the pill offset by `bodyX`,
+  the label under a pill at either end came out about 12 px off centre. `cx` follows the pill and `bodyX`
+  is 0.
+- **Frost.** 0.2 at rest, lower than the switch's 0.72, so the label under the pill reads in dark themes.
+  Refraction 14 and dispersion 0.03: with the switch's 30 and 0.1 the rim showed coloured fragments of the
+  neighbouring labels.
+- **Arrow keys follow the CSS direction.** shadcn's `--rtl` init doesn't add a direction provider, and Radix
+  and Base UI read direction from one, so in an RTL page ArrowRight went to the next segment in DOM order,
+  which is drawn to the left. The glass reports the control's computed direction: Radix gets it as `dir`
+  (unless the app passes `dir`), Base UI through `DirectionProvider`. React Aria's arrow keys read
+  direction from its locale (`I18nProvider`), which the control doesn't change; that path is untested.
+- **No WebGL2.** The selected segment shows shadcn's tabs look (background fill and shadow). It doesn't
+  animate.
+- **Stale builds.** The dev server doesn't rebuild `public/r`, and twice an install tested old code. The
+  item test now fails when a source file is newer than its built JSON.
+
 ## The shadcn CLI drops a file's leading comment
 
 Found on the first install: `shadcn add` writes each file without its leading comment block. That took the
@@ -83,6 +123,14 @@ engine. Other comments survive. So:
   `bases/radix/`. The test fails if they drift in anything else.
 
 ## Checked (2026-11-24)
+
+Melt segmented control: `registry:build`, `pnpm check`, `node --test scripts/melt-switch.test.ts` (5 pass)
+and `registry:test` (all 469 dry-run installs pass). Two fresh apps (shadcn 4.23.0): React Aria + Nova
+with the switch installed first from the live registry and the segmented control added from the local
+build without `--overwrite`; Base UI + Lyra in RTL with both items from the local build. Both ran
+`next build` and `next start`. In installed Chrome: glass drawn, clicks, a controlled control following a
+button outside it, arrow keys (RTL included), a narrower window, dark mode, no console errors.
+
 
 - `registry:build` (3 bases × 8 styles), `pnpm lint` (no warnings in the new files beyond the kit's own
   test-file style), `pnpm typecheck`, `node --test scripts/melt-switch.test.ts` (4 pass).
@@ -127,3 +175,5 @@ engine. Other comments survive. So:
 ## Not verified
 
 - No real phone.
+- Melt segmented control: arrow keys in an RTL React Aria app, the value a form submits, the no-WebGL2
+  fallback, reduced motion and size `lg`.
