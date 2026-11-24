@@ -1,0 +1,44 @@
+{
+  "name": "registry-kit",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "type": "module",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "dev:web": "turbo run dev -F web --",
+    "env:generate": "varlock codegen --path ./apps/web/",
+    "postinstall": "varlock codegen --path ./apps/web/",
+    "registry:init": "node packages/cli/src/cli.ts",
+    "registry:build": "pnpm -F web registry:build",
+    "registry:sync": "pnpm -F web registry:sync",
+    "registry:test": "pnpm -F web registry:test",
+    "lint": "oxlint .",
+    "format": "oxfmt --write",
+    "format:check": "oxfmt --check",
+    "lint:fix": "oxlint --fix .",
+    "typecheck": "turbo typecheck",
+    "test": "turbo test",
+    "check": "pnpm lint && pnpm format:check && pnpm typecheck"
+  },
+  "dependencies": {
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@registry-kit/config": "workspace:*",
+    "@types/node": "catalog:",
+    "oxfmt": "catalog:",
+    "oxlint": "catalog:",
+    "oxlint-tsgolint": "catalog:",
+    "turbo": "^2.11.7",
+    "typescript": "catalog:",
+    "varlock": "catalog:"
+  },
+  "engines": {
+    "node": ">=24.2.0"
+  },
+  "packageManager": "pnpm@12.18.0"
+}

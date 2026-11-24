@@ -1,0 +1,32 @@
+@import "@registry-kit/ui/globals.css";
+
+@import "./registry/__generated__/styles.css" layer(base);
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
+  }
+
+  a,
+  button,
+  [role="button"] {
+    touch-action: manipulation;
+  }
+
+  .cn-font-heading {
+    @apply font-heading;
+  }
+}
+
+@theme inline {
+  --ease-snappy: cubic-bezier(0.23, 1, 0.32, 1);
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, monospace;
+  --font-heading: var(--font-heading);
+}

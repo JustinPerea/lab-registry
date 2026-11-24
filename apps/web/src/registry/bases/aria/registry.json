@@ -1,0 +1,109 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "registry-kit",
+  "homepage": "https://registry-kit.vercel.app",
+  "items": [
+    {
+      "name": "login-form",
+      "type": "registry:block",
+      "title": "Login Form",
+      "description": "A sign-in card with a provider button and email fields.",
+      "dependencies": ["cn"],
+      "registryDependencies": ["button", "card", "field", "input"],
+      "files": [
+        {
+          "path": "components/login-form.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "stat-card",
+      "type": "registry:ui",
+      "title": "Stat Card",
+      "description": "A metric with its trend and a sparkline.",
+      "dependencies": ["cn"],
+      "files": [
+        {
+          "path": "ui/stat-card.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "number-field",
+      "type": "registry:ui",
+      "title": "Number Field",
+      "description": "A numeric input with step buttons.",
+      "dependencies": ["cn", "react-aria-components"],
+      "files": [
+        {
+          "path": "ui/number-field.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "empty-state",
+      "type": "registry:ui",
+      "title": "Empty State",
+      "description": "A placeholder for when there's nothing to show yet.",
+      "dependencies": ["cn"],
+      "files": [
+        {
+          "path": "ui/empty-state.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "timeline",
+      "type": "registry:ui",
+      "title": "Timeline",
+      "description": "A vertical list of events.",
+      "dependencies": ["cn"],
+      "files": [
+        {
+          "path": "ui/timeline.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "use-controllable-state",
+      "type": "registry:hook",
+      "title": "useControllableState",
+      "description": "State a parent can control, or leave to the component.",
+      "files": [
+        {
+          "path": "hooks/use-controllable-state.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "use-copy-to-clipboard",
+      "type": "registry:hook",
+      "title": "useCopyToClipboard",
+      "description": "Copies text to the clipboard and tracks the copied state.",
+      "files": [
+        {
+          "path": "hooks/use-copy-to-clipboard.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "format",
+      "type": "registry:lib",
+      "title": "format",
+      "description": "Formats dates, byte sizes and large numbers.",
+      "files": [
+        {
+          "path": "lib/format.ts",
+          "type": "registry:lib"
+        }
+      ]
+    }
+  ]
+}

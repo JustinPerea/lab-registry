@@ -1,0 +1,21 @@
+{
+  "name": "@registry-kit/cli",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "registry-kit": "./src/cli.ts"
+  },
+  "scripts": {
+    "test": "node --test src/*.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@clack/prompts": "^1.9.0"
+  },
+  "devDependencies": {
+    "@registry-kit/config": "workspace:*",
+    "@types/node": "catalog:",
+    "typescript": "catalog:"
+  }
+}
