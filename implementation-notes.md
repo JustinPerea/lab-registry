@@ -25,7 +25,8 @@ any base and style with RTL, first item the melt switch with all three presets.
 ## The melt switch item
 
 - Files per base: `ui/melt-switch.tsx` (the base's own Switch), `lib/melt-surface.tsx` (canvas, theme,
-  engine registration, fallback), `lib/melt.ts` (the three motion models), `lib/liquid-glass-engine.ts`.
+  engine registration, fallback) and `lib/melt.ts` (the three motion models). The engine comes from the
+  `melt-glass` item, which the switch depends on (see the segmented control below).
 - `melt.ts` is personal-profile's `melt.ts` cut to pour, stretch and drip. Hold and the code readout's
   `probe()` stay in the lab. The spring constants are the same.
 - Each base wraps its own Switch, so focus, keyboard, labels, form value and controlled state come from the
@@ -94,8 +95,8 @@ component.
 - **Arrow keys follow the CSS direction.** shadcn's `--rtl` init doesn't add a direction provider, and Radix
   and Base UI read direction from one, so in an RTL page ArrowRight went to the next segment in DOM order,
   which is drawn to the left. The glass reports the control's computed direction: Radix gets it as `dir`
-  (unless the app passes `dir`), Base UI through `DirectionProvider`. React Aria takes direction from its
-  locale (`I18nProvider`), so an RTL app sets that, as React Aria's docs say.
+  (unless the app passes `dir`), Base UI through `DirectionProvider`. React Aria's arrow keys read
+  direction from its locale (`I18nProvider`), which the control doesn't change; that path is untested.
 - **No WebGL2.** The selected segment shows shadcn's tabs look (background fill and shadow). It doesn't
   animate.
 - **Stale builds.** The dev server doesn't rebuild `public/r`, and twice an install tested old code. The
@@ -174,3 +175,5 @@ button outside it, arrow keys (RTL included), a narrower window, dark mode, no c
 ## Not verified
 
 - No real phone.
+- Melt segmented control: arrow keys in an RTL React Aria app, the value a form submits, the no-WebGL2
+  fallback, reduced motion and size `lg`.
