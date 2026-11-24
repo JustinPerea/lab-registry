@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# Deploys a Vercel preview of the registry site and fails if any of its
-# addresses answers without Vercel sign-in. Nothing here is public until
-# Justin says so (implementation-notes.md, "Deploying").
+# Deploys a Vercel preview of the registry site from the local tree and fails
+# if any of its addresses answers without Vercel sign-in. Production deploys
+# come from pushes to main (implementation-notes.md, "Deploying").
 #
 # On 2026-11-24 a plain `vercel deploy` on this new, unlinked project made a
 # production deployment, and Vercel gave it lab-registry-psi.vercel.app, which

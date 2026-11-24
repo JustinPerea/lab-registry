@@ -100,19 +100,20 @@ engine. Other comments survive. So:
 
 ## Deploying
 
-- Vercel project `lab-registry` on the "Justin's projects" team, made with the CLI, not linked to GitHub, so
-  a push deploys nothing. Root directory `apps/web`, Node 24, pnpm 12 through
-  `ENABLE_EXPERIMENTAL_COREPACK=1`. Deployment Protection is Standard (`all_except_custom_domains`).
-- Deploy only with `scripts/deploy-preview.sh`. It deploys to the preview environment, fails if Vercel made
-  anything else, and fails if any of the deployment's addresses answers without Vercel sign-in.
-- Why: the first plain `vercel deploy` on this new project became a production deployment. Vercel gave it
-  `lab-registry-psi.vercel.app`, which Standard Protection leaves public. It answered 200 from about
-  16:40 to 16:42 UTC on 2026-11-24, until the alias was removed. That deployment is deleted, and so are two
-  previews made while fixing the script. The current preview is behind sign-in.
+- Vercel project `lab-registry` on the "Justin's projects" team, connected to this GitHub repo. A push to
+  `main` deploys production at registry.justinperea.com (DNS on Vercel, same team); other branches get
+  previews. Root directory `apps/web`, Node 24, pnpm 12 through `ENABLE_EXPERIMENTAL_COREPACK=1`.
+- Deployment Protection is Standard (`all_except_custom_domains`): previews ask for Vercel sign-in, the
+  custom domain doesn't.
+- `scripts/deploy-preview.sh` makes a preview from a local tree without pushing. It fails if Vercel made
+  anything other than a preview, or if any of the deployment's addresses answers without sign-in.
+- Why the script exists: before the registry was public, the first plain `vercel deploy` on the new project
+  became a production deployment, and Vercel gave it `lab-registry-psi.vercel.app`, which Standard Protection
+  leaves public. It answered 200 from about 16:40 to 16:42 UTC on 2026-11-24, until the alias was removed.
 - The `.env.local` that `vercel link` writes is ignored by the kit's own `.env*.local` rule. Link also adds
   `.env*` to `.gitignore`; that edit was reverted, since it would ignore `apps/web/.env.schema`.
-- A protected preview can be looked at by a signed-in team member. It can't serve `shadcn add` to anyone
-  else, so the installs above ran against the local server.
+- Before the repo went public its commits were rewritten from a personal email to the GitHub noreply
+  address, and the repo-local `user.email` is set to that address.
 
 ## Site branding
 
