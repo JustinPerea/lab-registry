@@ -1,5 +1,4 @@
 import { Button } from "@registry-kit/ui/components/button";
-import { BlocksIcon } from "lucide-react";
 import Link from "next/link";
 
 import { GitHubIcon } from "@/components/github-icon";
@@ -16,9 +15,9 @@ export function SiteHeader() {
         >
           <span
             aria-hidden
-            className="flex size-5.5 items-center justify-center rounded-md bg-primary text-primary-foreground"
+            className="flex size-5.5 items-center justify-center rounded-md bg-primary text-[11px] font-black tracking-[-0.06em] text-primary-foreground"
           >
-            <BlocksIcon className="size-3.5" />
+            JP
           </span>
           <span className="font-semibold tracking-[-0.02em] text-foreground">
             {SITE_NAME}

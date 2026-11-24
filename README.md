@@ -2,8 +2,6 @@
 
 A [shadcn registry](https://ui.shadcn.com/docs/registry) of components from [justinperea.com/lab](https://justinperea.com/lab). Each item installs in a project's base (Base UI, Radix UI or React Aria) and style (all eight of shadcn/ui's), with RTL.
 
-Private for now. Nothing here is deployed to a public address yet.
-
 ## Items
 
 | Item          | What it is |
@@ -19,7 +17,7 @@ pnpm dlx shadcn@latest registry add "@justinperea=https://registry.justinperea.c
 pnpm dlx shadcn@latest add @justinperea/melt-switch
 ```
 
-`registry.justinperea.com` is the planned address and isn't live. To try an item now, run `pnpm dev` and use `http://localhost:3000/r/{style}/{name}.json` in place of it.
+`{style}` is filled in from your `components.json`, so the item arrives in your project's base and style. The site at [registry.justinperea.com](https://registry.justinperea.com) previews every item in each base, style and theme.
 
 ```tsx
 import { MeltSwitch } from "@/components/ui/melt-switch";

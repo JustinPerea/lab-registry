@@ -14,7 +14,7 @@ import { DEFAULT_BASE } from "@/registry/config";
 
 export const metadata: Metadata = {
   metadataBase: new URL(REGISTRIES[DEFAULT_BASE].homepage),
-  title: `${SITE_NAME} | An example registry for every base and style`,
+  title: `${SITE_NAME} | Components from my lab, for any shadcn project`,
   description: SITE_DESCRIPTION,
 };
 

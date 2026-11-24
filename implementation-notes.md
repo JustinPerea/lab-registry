@@ -1,8 +1,8 @@
 # Implementation notes
 
-The registry for justinperea.com/lab components. Justin approved building it on 2026-11-24 ("Yes build it",
-board thread #3263). The brief: start from sadmann7's registry-kit, install into any base and style with RTL,
-first item the melt switch with all three presets, nothing public without his yes.
+The registry for justinperea.com/lab components. Justin approved building it on 2026-11-24, and making it
+public at registry.justinperea.com the same day. The brief: start from sadmann7's registry-kit, install into
+any base and style with RTL, first item the melt switch with all three presets.
 
 ## Licenses
 
@@ -17,8 +17,8 @@ first item the melt switch with all three presets, nothing public without his ye
 
 - `registry:init --name justinperea --homepage https://registry.justinperea.com --github
   https://github.com/JustinPerea/lab-registry --bases base,radix,aria --styles` (all eight) `--no-examples`.
-- `homepage` is a placeholder for where the registry would be served. Nothing is there. It only matters for
-  items that depend on other items here, and the melt switch depends on none.
+- `homepage` is registry.justinperea.com, where the site and `public/r` are served. It is also the site's
+  `metadataBase`.
 - The kit wants Node 24.2+ and pnpm 12. This Mac's default Node is 22, so commands run with
   `~/.nvm/versions/node/v24.22.1/bin` first on PATH and pnpm through corepack.
 
@@ -114,7 +114,15 @@ engine. Other comments survive. So:
 - A protected preview can be looked at by a signed-in team member. It can't serve `shadcn add` to anyone
   else, so the installs above ran against the local server.
 
+## Site branding
+
+- The icons are the JP mark from justinperea.com's `favicon.svg`. The header shows the same mark in place of
+  the kit's blocks icon.
+- `opengraph-image.png` (1200 × 630) shows the melt switch mid-pour, captured from justinperea.com/lab/melt-switch
+  rather than from this site. The glass canvas caps its resolution at 2×, and the lab page's switch is larger
+  than the 36 px one here, so it stays sharp at that size. The lab page uses its own teal-to-violet track; an
+  installed switch takes the project's theme colors.
+
 ## Not verified
 
 - No real phone.
-- The site's icons and `opengraph-image.png` are still the kit's.
