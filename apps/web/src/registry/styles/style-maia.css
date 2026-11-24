@@ -6,4 +6,12 @@
   .cn-melt-switch-aria {
     @apply data-focus-visible:ring-[3px] data-focus-visible:ring-ring/50;
   }
+
+  .cn-melt-segment {
+    @apply focus-visible:ring-[3px] focus-visible:ring-ring/50;
+  }
+
+  .cn-melt-segment-aria {
+    @apply data-focus-visible:ring-[3px] data-focus-visible:ring-ring/50;
+  }
 }
