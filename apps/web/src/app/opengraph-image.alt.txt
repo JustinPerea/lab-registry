@@ -1,1 +1,1 @@
-registry-kit: One registry for every shadcn project. Components, hooks and utilities for shadcn/ui, with a preview of the base, style and theme customizer.
+Justin Perea's lab registry: components from justinperea.com/lab for shadcn/ui, with a preview of each base, style and theme.

@@ -12,6 +12,9 @@ import {
   type MeltSize,
 } from "@/registry/bases/base/lib/melt-surface";
 
+// A switch whose knob is a drop of glass, from justinperea.com/lab/melt-switch.
+// The glass is drawn by Bilal Gürşen's Liquid Glass kit (MIT, license in
+// lib/melt-surface.tsx); `preset` picks how the knob crosses the track.
 function MeltSwitch({
   preset = "pour",
   size = "default",

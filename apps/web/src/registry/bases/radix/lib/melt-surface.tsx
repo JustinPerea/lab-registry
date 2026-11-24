@@ -1,7 +1,10 @@
+"use client";
+
 /*
- * The glass is drawn by liquid-glass-engine.ts, copied unedited from the
- * Liquid Glass kit by Bilal Gürşen: https://github.com/bilalgursen/liquid-glass
- * (commit d4ef632). Its license:
+ * The glass is drawn by liquid-glass-engine.ts, copied from the Liquid Glass
+ * kit by Bilal Gürşen: https://github.com/bilalgursen/liquid-glass (commit
+ * d4ef632). The shadcn CLI drops a file's leading comment on install, so the
+ * kit's license sits here, below "use client", where it survives:
  *
  * MIT License
  *
@@ -25,7 +28,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-"use client";
 
 import * as React from "react";
 
@@ -84,33 +86,51 @@ const css = ([r, g, b]: Rgba, alpha: number) =>
 const unit = ([r, g, b]: Rgba): Rgb => [r / 255, g / 255, b / 255];
 const luma = ([r, g, b]: Rgba) => 0.2126 * r + 0.7152 * g + 0.0722 * b;
 
-// The track takes the project's theme, as shadcn/ui's switch does: --primary
-// when on, --input when off, and a knob that stands out from each.
-function readTheme(el: HTMLElement, probe: CanvasRenderingContext2D): Theme {
-  const style = getComputedStyle(el);
-  const read = (name: string, fallback: string) =>
-    toRgba(style.getPropertyValue(name).trim() || fallback, probe);
-  const background = read("--background", "#fff");
-  const foreground = read("--foreground", "#000");
-  const input = read("--input", "#e5e5e5");
-  // An --input with alpha, as in dark themes, sits on the page background.
+// The track takes the project's theme, as shadcn/ui's switch does. The colors
+// come from hidden elements with the switch's own classes (see ThemeProbe), so
+// a Tailwind prefix or inlined colors (cssVariables: false) work too.
+function readTheme(
+  probes: HTMLElement,
+  probe: CanvasRenderingContext2D,
+): Theme {
+  const read = (name: string, fallback: string) => {
+    const el = probes.querySelector<HTMLElement>(`[data-melt-color="${name}"]`);
+    const color = el ? getComputedStyle(el).backgroundColor : "";
+    return toRgba(color || fallback, probe);
+  };
+  const background = read("background", "#fff");
+  const foreground = read("foreground", "#000");
+  const input = read("off", "#e5e5e5");
+  // A translucent off color, as in dark themes, sits on the page background.
   const a = (input[3] ?? 255) / 255;
   const off: Rgba = [0, 1, 2].map((i) =>
     Math.round((input[i] ?? 0) * a + (background[i] ?? 0) * (1 - a)),
   ) as Rgba;
-  const primary = read("--primary", "#171717");
-  // shadcn/ui's thumb: --background when off, or --foreground on a dark page.
+  // shadcn/ui's thumb: the background when off, or the foreground on a dark page.
   const dark = luma(background) < 128;
   return {
-    on: css(primary, 1),
+    on: css(read("on", "#171717"), 1),
     off: css(off, 1),
     dots: css(background, 0.3),
     edge: css(foreground, 0.1),
     surface: unit(background),
     thumbOff: unit(dark ? foreground : background),
-    thumbOn: unit(read("--primary-foreground", "#fafafa")),
-    rtl: style.direction === "rtl",
+    thumbOn: unit(read("thumb-on", "#fafafa")),
+    rtl: getComputedStyle(probes).direction === "rtl",
   };
+}
+
+// Never shown: each element carries one theme color the canvas paints with.
+function ThemeProbe({ ref }: { ref: React.Ref<HTMLSpanElement> }) {
+  return (
+    <span ref={ref} hidden>
+      <span data-melt-color="on" className="bg-primary" />
+      <span data-melt-color="off" className="bg-input dark:bg-input/80" />
+      <span data-melt-color="thumb-on" className="bg-primary-foreground" />
+      <span data-melt-color="background" className="bg-background" />
+      <span data-melt-color="foreground" className="bg-foreground" />
+    </span>
+  );
 }
 
 // Registers a surface with the engine's one shared WebGL2 canvas, which skips
@@ -165,17 +185,19 @@ function useMeltSurface(
 ) {
   const track = React.useRef<HTMLCanvasElement>(null);
   const lens = React.useRef<HTMLCanvasElement>(null);
+  const colors = React.useRef<HTMLSpanElement>(null);
   const wake = React.useRef(() => {});
   const clear = React.useRef(() => {});
 
   React.useEffect(() => {
     const trackCanvas = track.current;
     const lensCanvas = lens.current;
+    const probes = colors.current;
     const tctx = trackCanvas?.getContext("2d");
     const probe = document
       .createElement("canvas")
       .getContext("2d", { willReadFrequently: true });
-    if (!trackCanvas || !lensCanvas || !tctx || !probe) return;
+    if (!trackCanvas || !lensCanvas || !probes || !tctx || !probe) return;
 
     const pad = padFor(g.H);
     const w = g.W + 2 * pad.x;
@@ -185,7 +207,7 @@ function useMeltSurface(
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     trackCanvas.width = Math.round(w * dpr);
     trackCanvas.height = Math.round(h * dpr);
-    let theme = readTheme(trackCanvas, probe);
+    let theme = readTheme(probes, probe);
 
     const paint = (c: CanvasRenderingContext2D) => {
       const { H, W } = g;
@@ -300,7 +322,7 @@ function useMeltSurface(
 
     // A theme or direction change repaints the track and the glass over it.
     const retheme = () => {
-      theme = readTheme(trackCanvas, probe);
+      theme = readTheme(probes, probe);
       drawTrack();
       surface.wake();
     };
@@ -326,7 +348,7 @@ function useMeltSurface(
     };
   }, [g, model, pressed, onReady]);
 
-  return { track, lens, wake, clear };
+  return { track, lens, colors, wake, clear };
 }
 
 // A CSS linear() curve sampled from a spring, for the plain thumb shown when
@@ -380,7 +402,12 @@ export function MeltGlass({
     [onReady],
   );
   const held = React.useRef(pressed);
-  const { track, lens, wake, clear } = useMeltSurface(g, model, held, ready);
+  const { track, lens, colors, wake, clear } = useMeltSurface(
+    g,
+    model,
+    held,
+    ready,
+  );
   const was = React.useRef(on);
 
   React.useEffect(() => {
@@ -396,11 +423,10 @@ export function MeltGlass({
   }, [model, pressed, wake]);
 
   const pad = padFor(g.H);
-  const layer = "pointer-events-none absolute max-w-none";
   return (
     <span
       aria-hidden
-      className={layer}
+      className="pointer-events-none absolute max-w-none"
       style={{
         left: -pad.x,
         top: -pad.top,
@@ -408,15 +434,23 @@ export function MeltGlass({
         height: g.H + pad.top + pad.bottom,
       }}
     >
-      <canvas ref={track} className={`${layer} start-0 top-0 size-full`} />
-      <span className={`${layer} start-0 top-0 size-full`}>
-        <canvas ref={lens} className={`${layer} start-0 top-0 size-0`} />
+      <ThemeProbe ref={colors} />
+      <canvas
+        ref={track}
+        className="pointer-events-none absolute start-0 top-0 size-full max-w-none"
+      />
+      <span className="pointer-events-none absolute start-0 top-0 size-full">
+        <canvas
+          ref={lens}
+          className="pointer-events-none absolute start-0 top-0 size-0 max-w-none"
+        />
       </span>
       {glass === false && (
         // Mirrored in RTL, so on is at the start.
-        <span className={`${layer} inset-0 rtl:-scale-x-100`}>
+        <span className="pointer-events-none absolute inset-0 rtl:-scale-x-100">
           <span
-            className={`${layer} rounded-full bg-background shadow-sm`}
+            data-on={on || undefined}
+            className="pointer-events-none absolute rounded-full bg-background shadow-sm data-on:bg-primary-foreground dark:bg-foreground dark:data-on:bg-primary-foreground"
             style={{
               top: pad.top + g.H / 2 - g.r,
               left: pad.x + g.H / 2 - g.r,

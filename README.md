@@ -1,76 +1,48 @@
-# [registry-kit](https://registry-kit.vercel.app)
+# lab-registry
 
-A starter for [shadcn registries](https://ui.shadcn.com/docs/registry) that builds every item for every base and style, with RTL, the way shadcn/ui builds its own registry.
+A [shadcn registry](https://ui.shadcn.com/docs/registry) of components from [justinperea.com/lab](https://justinperea.com/lab). Each item installs in a project's base (Base UI, Radix UI or React Aria) and style (all eight of shadcn/ui's), with RTL.
 
-[![The registry-kit preview site](./.github/assets/screenshot.png)](https://registry-kit.vercel.app)
+Private for now. Nothing here is deployed to a public address yet.
 
-## Features
+## Items
 
-- **3 bases:** Base UI, Radix UI and React Aria
-- **8 styles:** Vega, Nova, Maia, Lyra, Mira, Luma, Sera and Rhea, matching shadcn/ui's
-- **RTL:** logical classes in the source, which the shadcn CLI converts on install
-- **Fallbacks:** projects on a style you don't build get your Nova build, not a 404
-- **Build checks:** missing dependencies, unstyled markers and bases that drift apart fail the build
-- **Preview site:** every item in every base, style and direction, with every option from shadcn/ui's create page, like theme, font, radius and icon library
-- **Setup CLI:** keep only the bases, styles and items you need
+| Item          | What it is |
+| ------------- | ---------- |
+| `melt-switch` | A switch whose knob is a drop of glass. `preset` picks how it crosses the track: `pour`, `stretch` or `drip`. It wraps each base's own Switch and takes the project's theme colors. [Lab page](https://justinperea.com/lab/melt-switch) |
 
-## Quick start
+## Installing
 
-Click **Use this template** on GitHub, then:
+A project adds the registry once, then installs items by name:
 
 ```bash
-git clone https://github.com/<you>/<your-registry>
-cd <your-registry>
+pnpm dlx shadcn@latest registry add "@justinperea=https://registry.justinperea.com/r/{style}/{name}.json"
+pnpm dlx shadcn@latest add @justinperea/melt-switch
+```
+
+`registry.justinperea.com` is the planned address and isn't live. To try an item now, run `pnpm dev` and use `http://localhost:3000/r/{style}/{name}.json` in place of it.
+
+```tsx
+import { MeltSwitch } from "@/components/ui/melt-switch";
+
+<MeltSwitch preset="drip" defaultChecked />;
+```
+
+## Developing
+
+Requires Node 24.2 or later and pnpm 12 (`corepack pnpm`).
+
+```bash
 pnpm install
-pnpm registry:init
-pnpm dev
+pnpm dev               # the preview site
+pnpm registry:build    # public/r for every base and style
+pnpm registry:test     # shadcn add --dry-run for every base, style and option
+pnpm -F web test       # includes scripts/melt-switch.test.ts
+pnpm check             # lint, format and types
 ```
 
-`registry:init` asks for your registry's name, homepage and repository, and which bases, styles and example items to keep. Open the URL `pnpm dev` prints to see the preview.
+[Adding items](./docs/adding-items.md), [how it works](./docs/how-it-works.md) and [setup](./docs/setup.md) are the kit's own docs. Notes on decisions in this repo are in [implementation-notes.md](./implementation-notes.md).
 
-See [Setup](./docs/setup.md) for the flags and for deploying.
+## Credits
 
-## Installing items
-
-A project adds your registry once:
-
-```bash
-pnpm dlx shadcn@latest registry add "@registry-kit=https://registry-kit.vercel.app/r/{style}/{name}.json"
-```
-
-Then installs items by name:
-
-```bash
-pnpm dlx shadcn@latest add @registry-kit/stat-card
-```
-
-The CLI fills `{style}` from the project's `components.json`, like `base-nova`, so each project gets the build for its own base and style.
-
-## Documentation
-
-- [Setup](./docs/setup.md): run `registry:init`, then deploy
-- [Adding items](./docs/adding-items.md): write an item, style it and pass the build checks
-- [How it works](./docs/how-it-works.md): the build, the install, fallbacks and the preview
-
-## Scripts
-
-| Command               | What it does                                                          |
-| --------------------- | --------------------------------------------------------------------- |
-| `pnpm registry:init`  | Choose the registry's name, bases, styles and items                   |
-| `pnpm dev`            | Start the preview                                                     |
-| `pnpm build`          | Build the registry, then the site                                     |
-| `pnpm registry:build` | Build `public/r` for every base and style                             |
-| `pnpm registry:test`  | Install every item for every base, style and `components.json` option |
-| `pnpm registry:sync`  | Sync shadcn/ui primitives, styles and themes from `SHADCN_REF`        |
-| `pnpm test`           | Test `registry:init` on a copy of the registry                        |
-| `pnpm check`          | Lint, check formatting and type-check                                 |
-
-Requires Node 24.2 or later and pnpm. The scripts run on Node's built-in TypeScript support.
-
-## Contributing
-
-Read the [contributing guide](./CONTRIBUTING.md).
-
-## License
-
-[MIT](./LICENSE)
+- Built on [registry-kit](https://github.com/sadmann7/registry-kit) by Sadman Sakib (MIT, see [LICENSE](./LICENSE)), from commit `aae92e0`.
+- The melt switch's glass is drawn by `liquid-glass-engine.ts`, copied unedited from [Liquid Glass](https://github.com/bilalgursen/liquid-glass) by Bilal Gürşen (MIT, commit `d4ef632`). Its license is in each base's `lib/melt-surface.tsx`.

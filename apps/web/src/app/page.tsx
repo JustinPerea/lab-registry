@@ -33,6 +33,9 @@ function pick<T extends string>(
   return options.find((option) => option.name === value)?.name ?? fallback;
 }
 
+const FOOTER_LINK =
+  "rounded-sm font-medium text-foreground underline-offset-4 outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50";
+
 export default async function Home({ searchParams }: PageProps<"/">) {
   const params = await searchParams;
   const base = pick<BaseName>(params.base, BASES, DEFAULT_BASE);
@@ -58,11 +61,11 @@ export default async function Home({ searchParams }: PageProps<"/">) {
             {pluralize(STYLES.length, "style")} · RTL
           </p>
           <h1 className="text-[2.5rem] leading-[1.02] font-semibold tracking-[-1.2px] sm:text-6xl sm:leading-none sm:tracking-[-2.2px]">
-            One registry for every shadcn project.
+            Components from my lab, for any shadcn project.
           </h1>
           <p className="max-w-120 text-base leading-normal text-muted-foreground">
-            Components, hooks and utilities for shadcn/ui. Each one installs in
-            your project&apos;s base and style, with RTL support.
+            Pieces from justinperea.com/lab, packaged for shadcn/ui. Each one
+            installs in your project&apos;s base and style, with RTL support.
           </p>
         </div>
 
@@ -204,17 +207,30 @@ export default async function Home({ searchParams }: PageProps<"/">) {
       </div>
 
       <footer className="border-t border-border px-4 py-5 text-center text-[13px] text-muted-foreground sm:px-12 sm:py-6">
-        {/* Points at the template's author, not at `GITHUB_URL`, which
-            forks change to their own repo. */}
+        {/* Credits the template's author and the Liquid Glass kit, whose
+            engine draws the melt switch. */}
         <p>
-          Built by{" "}
+          By{" "}
+          <a href="https://justinperea.com" className={FOOTER_LINK}>
+            Justin Perea
+          </a>
+          , on{" "}
           <a
-            href="https://x.com/sadmann17"
+            href="https://github.com/sadmann7/registry-kit"
             target="_blank"
             rel="noreferrer"
-            className="rounded-sm font-medium text-foreground underline-offset-4 outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+            className={FOOTER_LINK}
           >
-            sadman
+            sadman&apos;s registry-kit
+          </a>
+          . Glass by{" "}
+          <a
+            href="https://github.com/bilalgursen/liquid-glass"
+            target="_blank"
+            rel="noreferrer"
+            className={FOOTER_LINK}
+          >
+            Bilal Gürşen&apos;s Liquid Glass
           </a>
           .
         </p>
